@@ -28,26 +28,43 @@ class _HomeScreenState extends State<HomeScreen> {
           resizeToAvoidBottomInset: false,
           body: Container(
             width: double.infinity,
-            height: double.infinity,
-            padding: const EdgeInsets.all(20),
-            color: const Color.fromARGB(255, 179, 205, 217),
+             padding: const EdgeInsets.symmetric(horizontal: 32.0),
+               decoration: BoxDecoration(
+          image: DecorationImage(
+              image: const AssetImage("assets/backgroundImage/weatherBackground image.jpg"),
+              fit: BoxFit.cover,
+                  ),
+        ),
             child: Visibility(
               visible: weatherprovider.isLoaded,
               replacement: const Center(child: CircularProgressIndicator()),
               child: Column(
                 children: [
+                   const SizedBox(
+                    height: 30,
+                  ),
                   textFormField(size, weatherprovider, context),
                   const SizedBox(
                     height: 30,
                   ),
                   cityName(weatherprovider),
                   const SizedBox(
-                    height: 20,
+                    height: 70,
                   ),
                   Temprature(size, weatherprovider),
+                   const SizedBox(
+                    height: 60,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                   Pressure(size, weatherprovider),
-                  Humidity(size, weatherprovider),
-                  CloudCover(size, weatherprovider)
+                  CloudCover(size, weatherprovider),
+                   Humidity(size, weatherprovider),
+                    ],
+                  ),
+                 
+                 
                 ],
               ),
             ),
@@ -57,169 +74,125 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container CloudCover(Size size, WeatherProvider weatherprovider) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.12,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade900,
-              offset: const Offset(1, 2),
-              blurRadius: 3,
-              spreadRadius: 1,
-            )
-          ]),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/cloudCoverIcon.png',
-            width: size.width * 0.09,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Cloud Cover:${weatherprovider.cover.toStringAsFixed(2)}%',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    );
+  Column CloudCover(Size size, WeatherProvider weatherprovider) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.cloud_queue,
+          size: 70,
+          color:Colors.white,
+        ),
+        const SizedBox(height: 5),
+        RichText(
+            text: TextSpan(
+                text: weatherprovider.cover.toStringAsFixed(2),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+                children: [
+              TextSpan(
+                  text: "%",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                  ))
+                ]))]);
   }
 
-  Container Humidity(Size size, WeatherProvider weatherprovider) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.12,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade900,
-              offset: const Offset(1, 2),
-              blurRadius: 3,
-              spreadRadius: 1,
-            )
-          ]),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/humidityIcon.png',
-            width: size.width * 0.09,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Humidity:${weatherprovider.hum.toStringAsFixed(2)}%',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    );
+  Column Humidity(Size size, WeatherProvider weatherprovider) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.water_drop_outlined,
+          size: 70,
+          color:Colors.white,
+        ),
+        const SizedBox(height: 5),
+        RichText(
+            text: TextSpan(
+                text: weatherprovider.hum.toStringAsFixed(2),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+                children: [
+              TextSpan(
+                  text: "%",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                  ))
+                ]))]);
   }
 
-  Container Pressure(Size size, WeatherProvider weatherprovider) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.12,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade900,
-              offset: const Offset(1, 2),
-              blurRadius: 3,
-              spreadRadius: 1,
-            )
-          ]),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/barometrIcon.png',
-            width: size.width * 0.09,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Pressure:${weatherprovider.press.toStringAsFixed(2)}hpa',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    );
+  Column Pressure(Size size, WeatherProvider weatherprovider) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.air_outlined,
+          size: 70,
+          color:Colors.white,
+        ),
+        const SizedBox(height: 5),
+        RichText(
+            text: TextSpan(
+                text: weatherprovider.press.toStringAsFixed(2),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+                children: [
+              TextSpan(
+                  text: "hpa",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                  ))
+                ]))]);
   }
 
-  Container Temprature(Size size, WeatherProvider weatherprovider) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.12,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade900,
-              offset: Offset(1, 2),
-              blurRadius: 3,
-              spreadRadius: 1,
-            )
-          ]),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/thermometerIcon.png',
-            width: size.width * 0.09,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Temprature:${weatherprovider.temp.toStringAsFixed(2)}℃',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    );
+  Column Temprature(Size size, WeatherProvider weatherprovider) {
+    return Column(
+      children: [
+        const Icon(
+          Icons.sunny,
+          size: 80,
+          color:Colors.amber,
+        ),
+        const SizedBox(height: 18),
+        RichText(
+            text: TextSpan(
+                text: weatherprovider.temp.toStringAsFixed(2),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 56,
+                  fontWeight: FontWeight.w700,
+                ),
+                children: [
+              TextSpan(
+                  text: "°C",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                  ))
+                ]))]);
   }
 
-  Padding cityName(WeatherProvider weatherprovider) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+  SizedBox cityName(WeatherProvider weatherprovider) {
+    return SizedBox(
+      width: 226,
+      height: 61,
+      child: Column(
         children: [
-          const Icon(
-            Icons.pin_drop,
-            color: Colors.red,
-            size: 40,
-          ),
-          Text(
+           Text(
             weatherprovider.cityName,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
             ),
-          )
+          ),
+          const SizedBox(height: 4),
         ],
       ),
     );

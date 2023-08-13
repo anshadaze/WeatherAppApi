@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherapp/controller/provider/weatherProvider.dart';
-import 'package:weatherapp/helper/weather.dart';
-import 'package:weatherapp/view/homeScreen/methods/methods.dart';
+import 'package:weatherapp/controller/weatherProvider.dart';
+import 'package:weatherapp/services/weather.dart';
+import 'package:weatherapp/view/homeScreen/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,24 +45,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 30,
                   ),
-                  textFormField(size, weatherprovider, context),
+                  TextFiled(size: size, weatherprovider: weatherprovider, context: context),
                   const SizedBox(
                     height: 30,
                   ),
-                  cityName(weatherprovider),
+                  CityName(weatherprovider: weatherprovider),
                   const SizedBox(
                     height: 70,
                   ),
-                  Temprature(size, weatherprovider),
+                  Temprature(size:size, weatherprovider:weatherprovider),
                   const SizedBox(
                     height: 60,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Pressure(size, weatherprovider),
-                      CloudCover(size, weatherprovider),
-                      Humidity(size, weatherprovider),
+                      Pressure(size: size, weatherprovider: weatherprovider),
+                      CloudCover(size: size, weatherprovider: weatherprovider),
+                      Humidity(size: size, weatherprovider: weatherprovider),
                     ],
                   ),
                 ],
@@ -81,3 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 }
+
+
+
+
+
+
+
+
+
+

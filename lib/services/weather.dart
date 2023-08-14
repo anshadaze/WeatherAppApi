@@ -8,8 +8,6 @@ import 'package:http/http.dart' as http;
 import '../controller/weatherProvider.dart';
 
 
-
-//providerne ithinullil vilkkaruth vre oru function undaakkanam
 getCurrentLocation(BuildContext context) async {
   var position = await Geolocator.getCurrentPosition(
     desiredAccuracy: LocationAccuracy.low,
@@ -23,6 +21,7 @@ getCurrentLocation(BuildContext context) async {
 }
 
 getCurrentCityWeather(BuildContext context, Position position) async {
+  var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
   var client = http.Client();
   var uri =
       '${domain}lat=${position.latitude}&lon=${position.longitude}&appid=${apiKey}';
@@ -33,37 +32,33 @@ getCurrentCityWeather(BuildContext context, Position position) async {
     var decodeData = json.decode(data);
     print(data);
     updateUI(context, decodeData);
-    Provider.of<WeatherProvider>(context, listen: false).changeIsLoadedValue(true);
+    weatherProvider.changeIsLoadedValue(true);
   } else {
     print(response.statusCode);
   }
 }
 
 updateUI(BuildContext context, var decodedData) {
+  var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
   if (decodedData == null) {
-    Provider.of<WeatherProvider>(context).changeTempValue(0);
-    Provider.of<WeatherProvider>(context).changePressValue(0);
-    Provider.of<WeatherProvider>(context).changeHumValue(0);
-    Provider.of<WeatherProvider>(context).changeCoverValue(0);
-    Provider.of<WeatherProvider>(context).changeCityName('Not available');
+    weatherProvider.changeTempValue(0);
+    weatherProvider.changePressValue(0);
+    weatherProvider.changeHumValue(0);
+    weatherProvider.changeCoverValue(0);
+    weatherProvider.changeCityName('Not available');
   } else {
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changeTempValue(decodedData['main']['temp'] - 273);
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changePressValue(decodedData['main']['pressure']);
+    weatherProvider.changeTempValue(decodedData['main']['temp'] - 273);
+    weatherProvider.changePressValue(decodedData['main']['pressure']);
+    weatherProvider.changeHumValue(decodedData['main']['humidity']);
 
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changeHumValue(decodedData['main']['humidity']);
+    weatherProvider.changeCoverValue(decodedData['clouds']['all']);
 
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changeCoverValue(decodedData['clouds']['all']);
-
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changeCityName(decodedData['name']);
+    weatherProvider.changeCityName(decodedData['name']);
   }
 }
 
 getCityWeather(BuildContext context, String cityName) async {
+  var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
   var client = http.Client();
   var uri = '${domain}q=$cityName&appid=${apiKey}';
   var url = Uri.parse(uri);
@@ -73,8 +68,7 @@ getCityWeather(BuildContext context, String cityName) async {
     var decodeData = json.decode(data);
     print(data);
     updateUI(context, decodeData);
-    Provider.of<WeatherProvider>(context, listen: false)
-        .changeIsLoadedValue(true);
+    weatherProvider.changeIsLoadedValue(true);
   } else {
     print(response.statusCode);
   }

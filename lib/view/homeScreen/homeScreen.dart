@@ -29,42 +29,43 @@ class _HomeScreenState extends State<HomeScreen> {
           resizeToAvoidBottomInset: false,
           body: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: const AssetImage(
-                    "assets/backgroundImage/weatherBackground image.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
+             padding: const EdgeInsets.symmetric(horizontal: 32.0),
+               decoration: BoxDecoration(
+          image: DecorationImage(
+              image: const AssetImage("assets/backgroundImage/weatherBackground image.jpg"),
+              fit: BoxFit.cover,
+                  ),
+        ),
             child: Visibility(
               visible: weatherprovider.isLoaded,
               replacement: const Center(child: CircularProgressIndicator()),
               child: Column(
                 children: [
+                   const SizedBox(
+                    height: 30,
+                  ),
+                  textFormField(size, weatherprovider, context),
                   const SizedBox(
                     height: 30,
                   ),
-                  TextFiled(size: size, weatherprovider: weatherprovider, context: context),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CityName(weatherprovider: weatherprovider),
+                  cityName(weatherprovider),
                   const SizedBox(
                     height: 70,
                   ),
-                  Temprature(size:size, weatherprovider:weatherprovider),
-                  const SizedBox(
+                  Temprature(size, weatherprovider),
+                   const SizedBox(
                     height: 60,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Pressure(size: size, weatherprovider: weatherprovider),
-                      CloudCover(size: size, weatherprovider: weatherprovider),
-                      Humidity(size: size, weatherprovider: weatherprovider),
+                  Pressure(size, weatherprovider),
+                  CloudCover(size, weatherprovider),
+                  Humidity(size, weatherprovider),
                     ],
                   ),
+                 
+                 
                 ],
               ),
             ),
@@ -74,6 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -81,13 +84,3 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 }
-
-
-
-
-
-
-
-
-
-

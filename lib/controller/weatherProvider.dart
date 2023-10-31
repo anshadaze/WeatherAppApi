@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:weatherapp/services/weather.dart';
 
 class WeatherProvider extends ChangeNotifier{
-
+  Services services=Services();
    
    bool isLoaded = false;
    num temp=0;
@@ -11,38 +15,62 @@ class WeatherProvider extends ChangeNotifier{
   String cityName='';
 TextEditingController controller = TextEditingController();
 
-   void changeIsLoadedValue(bool value){
-     isLoaded=value;
-     notifyListeners();
-   }
+getCurrentLocation(BuildContext context) async {
+ var position=await services.getCurrentLocation(context);
+  if (position != null) {
+    getCurrentCityWeather(context, position);
+  } else {
+    print('data unavailable');
+  }
+}
 
 
-   void changeTempValue(num value){
-    temp=value;
-    notifyListeners();
 
-   }
+getCurrentCityWeather(BuildContext context, Position position) async {
+  var response=await  services.getCurrentCityWeather(context,position);
+  if (response.statusCode == 200) {
+    var data = response.body;
+    var decodeData = json.decode(data);
+    print(data);
+    updateUI(context, decodeData);
+    isLoaded=true;
+  } else {
+    print(response.statusCode);
+  }
+  }
 
-   void changePressValue(num value){
-    press=value;
-    notifyListeners();
-   }
+  updateUI(BuildContext context, var decodedData) {
+  if (decodedData == null) {
+    temp=0;
+    press=0;
+    hum=0;
+    cover=0;
+    cityName='Not available';
+  } else {
+    temp=decodedData['main']['temp'] - 273;
+    press=decodedData['main']['pressure'];
+    hum=decodedData['main']['humidity'];
+    cover=decodedData['clouds']['all'];
+    cityName=(decodedData['name']);
+  }
+  notifyListeners();
+}
 
-   void changeHumValue(num value){
-   hum=value;
-   notifyListeners();
 
-   }
 
-   void changeCoverValue(num value){
-     cover=value;
-     notifyListeners();
-   }
+getCityWeather(BuildContext context, String cityName) async {
+    var response=await services.getCityWeather(context, cityName);
+  if (response.statusCode == 200) {
+    var data = response.body;
+    var decodeData = json.decode(data);
+    print(data);
+    updateUI(context, decodeData);
+    isLoaded=true;
+  } else {
+    print(response.statusCode);
+  }
 
-   void changeCityName(String value){
-      cityName=value;
-      notifyListeners();
-   }
+ }
 
 
    void changeControllerValue(value){

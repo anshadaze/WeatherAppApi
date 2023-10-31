@@ -93,12 +93,12 @@ Column CloudCover(Size size, WeatherProvider weatherprovider) {
         RichText(
             text: TextSpan(
                 text: weatherprovider.temp.toStringAsFixed(2),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 56,
                   fontWeight: FontWeight.w700,
                 ),
-                children: [
+                children: const [
               TextSpan(
                   text: "°C",
                   style: TextStyle(
@@ -141,11 +141,8 @@ Column CloudCover(Size size, WeatherProvider weatherprovider) {
       child: Center(
         child: TextFormField(
           onFieldSubmitted: (String s) {
-            weatherprovider.changeIsLoadedValue(false);
 
-            weatherprovider.changeCityName(s);
-
-            getCityWeather(context, s);
+           weatherprovider.getCityWeather(context, s);
 
             weatherprovider.controller.clear();
           },

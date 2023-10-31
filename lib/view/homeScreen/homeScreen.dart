@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weatherapp/controller/weatherProvider.dart';
-import 'package:weatherapp/services/weather.dart';
 import 'package:weatherapp/view/homeScreen/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCurrentLocation(context);
+   Provider.of<WeatherProvider>(context,listen: false).getCurrentLocation(context);
   }
 
   @override
